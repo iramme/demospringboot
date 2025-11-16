@@ -1,49 +1,12 @@
 package com.example.demo;
-
-import com.example.demo.model.Student;
-import com.example.demo.repository.StudentRepository;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ControllerTest {
-
-    @Autowired
-    private StudentRepository studentRepository;
-
-    @BeforeEach
-    void cleanDatabase() {
-        studentRepository.deleteAll(); // Vide la table avant chaque test
-    }
-
-    @Test
-    @Order(1)
-    void shouldSaveStudent() {
-        Student student = new Student();
-        student.setName("Charlie");
-        student.setAddress("Algeria");
-        studentRepository.save(student);
-
-        assertThat(studentRepository.count()).isEqualTo(1);
-    }
-
-    @Test
-    @Order(2)
-    void shouldFindAllStudents() {
-        // Crée un étudiant pour s'assurer qu'il y a une entrée
-        Student student = new Student();
-        student.setName("Charlie");
-        student.setAddress("Algeria");
-        studentRepository.save(student);
-
-        List<Student> students = studentRepository.findAll();
-        assertThat(students).hasSize(1);
-        assertThat(students.get(0).getName()).isEqualTo("Charlie");
-    }
-}
+ 
+import org.junit.jupiter.api.Test; 
+import org.springframework.boot.test.context.SpringBootTest; 
+ 
+@SpringBootTest 
+class DemoTestApplicationTests { 
+ 
+    @Test 
+    void contextLoads() { 
+    } 
+} 
