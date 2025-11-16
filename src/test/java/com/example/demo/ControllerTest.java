@@ -4,6 +4,8 @@ import com.example.demo.model.Student;
 import com.example.demo.repository.StudentRepository;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -14,17 +16,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest
-@TestMethodOrder(OrderAnnotation.class) // Active l'ordre défini par @Order
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ControllerTest {
 
     @Autowired
     private StudentRepository studentRepository;
 
-    @BeforeAll
-    static void setup(@Autowired StudentRepository studentRepository) {
-        // Vider la table une seule fois avant tous les tests
+    @BeforeEach
+    void cleanDatabase() {
         studentRepository.deleteAll();
     }
 
@@ -43,9 +43,12 @@ class ControllerTest {
     @Test
     @Order(2)
     void shouldFindAllStudents() {
-        // Ici, l'étudiant "Charlie" ajouté dans le test précédent existe encore
-        List<Student> students = studentRepository.findAll();
+        Student student = new Student();
+        student.setName("Charlie");
+        student.setAddress("Algeria");
+        studentRepository.save(student);
 
+        List<Student> students = studentRepository.findAll();
         assertThat(students).hasSize(1);
         assertThat(students.get(0).getName()).isEqualTo("Charlie");
     }
